@@ -18,13 +18,24 @@ def load_data() -> Tuple[pd.DataFrame, pd.DataFrame]:
         return pd.DataFrame(), pd.DataFrame()
 
     with sqlite3.connect(DB_PATH) as con:
+		# Query for main pokemon data, joining with types and abilities
         pokemon_query = """
-        SELECT p.*, GROUP_CONCAT(t.name) as types FROM pokemon p
+        SELECT 
+            p.*, 
+            GROUP_CONCAT(DISTINCT t.name) as types,
+            GROUP_CONCAT(DISTINCT a.name) as abilities
+        FROM pokemon p
         LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
-        LEFT JOIN types t ON pt.type_id = t.id GROUP BY p.id
+        LEFT JOIN types t ON pt.type_id = t.id
+        LEFT JOIN pokemon_abilities pa ON p.id = pa.pokemon_id
+        LEFT JOIN abilities a ON pa.ability_id = a.id
+        GROUP BY p.id
         """
         pokemon_df = pd.read_sql_query(pokemon_query, con)
         pokemon_df['types'] = pokemon_df['types'].apply(lambda x: x.split(',') if x else [])
+        
+        # Process 'abilities' column into a list
+        pokemon_df['abilities'] = pokemon_df['abilities'].apply(lambda x: x.split(',') if x else [])
 
         stats_query = """
         SELECT ps.pokemon_id, s.name as stat_name, ps.base_value FROM pokemon_stats ps
@@ -36,4 +47,5 @@ def load_data() -> Tuple[pd.DataFrame, pd.DataFrame]:
             pokemon_df = pd.merge(pokemon_df, stats_pivot_df, left_on='id', right_on='pokemon_id', how='left')
 
         evolutions_df = pd.read_sql_query("SELECT * FROM evolutions", con)
+        
     return pokemon_df, evolutions_df
