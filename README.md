@@ -52,7 +52,7 @@ This diagram shows how the tables are connected:
                    +-------------------+
 
 +-------------------------------------------------+
-|                   evolutions                      |
+|                   evolutions                    |
 |-------------------------------------------------|
 | id (PK)                                         |
 | from_species (relates to pokemon.name)          |
@@ -136,4 +136,4 @@ docker compose up frontend
 
 Open your web browser and navigate to the following URL:
 
-[**http://localhost:8501**](https://www.google.com/search?q=http://localhost:8501)
+[**http://localhost:8501**](http://localhost:8501)
