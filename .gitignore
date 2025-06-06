@@ -1,0 +1,31 @@
+# --- Python ---
+
+# Virtual environment
+.pvenv/
+
+# General Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+# --- Database ---
+database/*
+!database/.gitkeep
+*.db-journal
+
+
+# --- Log files ---
+*.log
+
+# --- IDE / Editor Configuration ---
+.vscode/
+.idea/
+
+# --- Operating System Files ---
+.DS_Store
+
+# --- Environment Variables ---
+.env
+*.env

@@ -1,0 +1,33 @@
+# docker-compose.yml
+services:
+  pipeline:
+    build: .
+    command: python -m main
+    networks:
+      - pokedex-net
+    volumes:
+      - pokedex-data:/app/database
+  frontend:
+    build: .
+    command: streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - pokedex-net
+    volumes:
+      - pokedex-data:/app/database
+    ports:
+      - "8501:8501"
+    # The 'depends_on' key can be useful to signal startup order, though it doesn't wait
+    # for the pipeline to finish, just for the service to start.
+    # In our case, since the pipeline is a one-off task, this is less critical.
+    # depends_on:
+    #   - pipeline
+
+networks:
+  pokedex-net:
+    driver: bridge
+
+volumes:
+  pokedex-data:
+    # We leave the driver as default. Docker will manage it.
