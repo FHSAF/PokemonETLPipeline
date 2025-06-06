@@ -40,13 +40,13 @@ This diagram shows how the tables are connected:
 | abilities |      | pokemon_abilities   |    |pokemon|
 |-----------|      |---------------------|    |-------|
 | id (PK)   |---<--| ability_id (FK)     |    |id (PK)|
-| name      |      | pokemon_id (FK)     |-->---|name   |
+| name      |      | pokemon_id (FK)     |-->-|name   |
 +-----------+      +---------------------+    |...    |
                                               |       |
-+-----------+      +-------------------+    |       |
-|   stats   |      |   pokemon_stats   |    |       |
-|-----------|      |-------------------|    |       |
-| id (PK)   |---<--| stat_id (FK)      |    |       |
++-----------+      +-------------------+      |       |
+|   stats   |      |   pokemon_stats   |      |       |
+|-----------|      |-------------------|      |       |
+| id (PK)   |---<--| stat_id (FK)      |      |       |
 | name      |      | pokemon_id (FK)   |-->---|       |
 +-----------+      | base_value        |      +-------+
                    +-------------------+
@@ -85,7 +85,7 @@ This diagram shows how the tables are connected:
     This table stores the flattened evolution tree data. It represents a relationship between Pokémon species.
     * `from_species` / `to_species`: These fields store the names of the Pokémon in an evolution step (e.g., from "charmander" to "charmeleon").
     * `trigger`, `trigger_item`, `min_level`: These fields describe the condition required for the evolution to occur.
-	
+
 -----
 
 ### The ETL Process Explained
